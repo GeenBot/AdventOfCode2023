@@ -4,7 +4,7 @@ Module Module1
 
     Sub Main()
         'Reads the input into a file and then gets the first line 
-        Dim fileReader As StreamReader = My.Computer.FileSystem.OpenTextFileReader("C:\Users\Xander\source\repos\AdventOfCode2023\TextInputs\Day3Input.txt")
+        Dim fileReader As StreamReader = My.Computer.FileSystem.OpenTextFileReader("C:\Users\Xander\source\repos\AdventOfCode2023\TextInputs\Day3Test.txt")
         Dim line() As String = {"", fileReader.ReadLine, fileReader.ReadLine}
         Dim position As Integer
         Dim i As Integer
