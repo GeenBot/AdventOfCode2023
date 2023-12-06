@@ -16,15 +16,19 @@ Module Module1
         Dim fileReader As StreamReader = My.Computer.FileSystem.OpenTextFileReader("C:\Users\Xander\source\repos\AdventOfCode2023\TextInputs\Day5Input.txt")
         Dim textInput As String = fileReader.ReadLine()
         Dim seedString = textInput.Remove(0, 7)
-        Dim numberArray(7, 19) As String
+        Dim inputArray(9, 1) As String
         Dim seedArray(19) As String
         Dim counter As Integer = 0
-        Dim valueRange(60) As Map
+        Dim valueRange(7, 60) As Map
+        Dim lowestValue As Integer = 100
 
         'Splits the string into an array of number and then adds it to one dimension of an array using a for loop since I don't know how to otherwise
         seedArray = Split(seedString, " ")
-        For i = 0 To seedArray.Length - 1
-            numberArray(0, i) = seedArray(i)
+        For i = 0 To seedArray.Length / 2 - 1
+            For a = 0 To 1
+                inputArray(i, a) = seedArray(i * 2 + a)
+
+            Next
         Next
 
 
@@ -37,43 +41,62 @@ Module Module1
             Dim i = 0
             Do
                 'Makes one range of values for which to compare with
-                valueRange(i) = FillRange(textInput)
+                valueRange(counter, i) = FillRange(textInput)
                 textInput = fileReader.ReadLine()
                 i += 1
                 'Repeats for every line in the map
             Loop Until textInput = ""
-            'Compares the currently held number against the ranges of values
-            numberArray = FindValue(valueRange, numberArray, counter)
 
-            'increments the stage at which you are looking before heading to the next map
-            counter += 1
+
+
+            counter = counter + 1
             textInput = fileReader.ReadLine()
             textInput = fileReader.ReadLine()
-
-            'Repeats for every map
         Loop Until textInput = ""
 
-        'prints out the values in the final stage
-        For i = 0 To numberArray.GetLength(1) - 1
-            Console.WriteLine(numberArray(7, i))
+
+        For a = 0 To 8 Step 2
+            If FindValue(valueRange, inputArray, a) < lowestValue Then
+                lowestValue = FindValue(valueRange, inputArray, a)
+            End If
         Next
+        'increments the stage at which you are looking before heading to the next map
+
+
+        'Repeats for every map
+
+
+        'prints out the values in the final stage
+
+        Console.WriteLine(lowestValue)
+
         Console.ReadLine()
     End Sub
 
     'Compares the number to see whether it is in the range and then gives it the the correct new value based on whether it is or not
-    Function FindValue(valRange() As Map, num(,) As String, counter As Integer)
-        For i = 0 To num.GetLength(1) - 1
-            For a = 0 To valRange.Length - 1
-                If num(counter, i) >= valRange(a).sourceStartValue And num(counter, i) <= valRange(a).sourceEndValue Then
-                    num(counter + 1, i) = num(counter, i) - valRange(a).sourceStartValue + valRange(a).destinationStartValue
-                    Exit For
-                ElseIf a = valRange.Length - 1 Then
-                    num(counter + 1, i) = num(counter, i)
-                End If
-            Next
+    Function FindValue(valRange(,) As Map, inputArray(,) As String, counter As Integer)
+        Dim value As Double
+        Dim privateLowestValue As Double = 10000000000
+        For i = Val(inputArray(counter, 0)) To Val(inputArray(counter, 1)) + Val(inputArray(counter, 0)) - 1
+            value = i
+            For stage = 0 To 7
 
+
+                For a = 0 To valRange.GetLength(1) - 1
+                    If value >= valRange(stage, a).sourceStartValue And value <= valRange(stage, a).sourceEndValue Then
+                        value = value - valRange(stage, a).sourceStartValue + valRange(stage, a).destinationStartValue
+                        Exit For
+                    End If
+                Next
+
+
+            Next
+            If privateLowestValue > value Then
+                privateLowestValue = value
+            End If
         Next
-        Return num
+
+        Return privateLowestValue
     End Function
 
 
