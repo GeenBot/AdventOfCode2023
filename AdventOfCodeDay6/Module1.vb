@@ -6,20 +6,13 @@
         Dim totalDistance As Double
         Dim wins As Double
         Dim finalResult As Double = 1
-
-
         For held = 1 To totalTime - 1
             totalDistance = held * (totalTime - held)
             If totalDistance > distance Then
                 wins += 1
             End If
         Next
-        finalResult = wins
-
-
-
-
-        Console.WriteLine(finalResult)
+        Console.WriteLine(wins)
         Console.ReadLine()
     End Sub
 
