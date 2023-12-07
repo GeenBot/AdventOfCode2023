@@ -15,6 +15,7 @@ Module Module1
 
     Sub Main()
         Dim fileReader As StreamReader = My.Computer.FileSystem.OpenTextFileReader("C:\Users\Xander\source\repos\AdventOfCode2023\TextInputs\Day7Input.txt")
+        'Dim fileReader As StreamReader = My.Computer.FileSystem.OpenTextFileReader("C:\Users\Xander\source\repos\AdventOfCode2023\TextInputs\Day7Test.txt")
         Dim textInput As String = fileReader.ReadLine()
         Dim allHands(0) As Hand
         Dim i As Integer
@@ -40,7 +41,7 @@ Module Module1
         Dim sb As New System.Text.StringBuilder()
         Dim rank = 1
         For Each hand As Hand In sortQuery
-            Console.WriteLine(hand.labels)
+            Console.WriteLine(hand.labels & " " & hand.bet)
             outputValue += hand.bet * rank
             rank += 1
         Next
@@ -95,7 +96,7 @@ Module Module1
         Next
         For a = 0 To 44
             If Not (count(a) = 0) Then
-                If Not a = 26 Then
+                If a = 26 Then
 
                     jokerPosition = currentPosition
 
@@ -124,7 +125,9 @@ Module Module1
 
 
         For i = 0 To 4
-            value(i) += Jcounter
+            If Not (i = jokerPosition) Then
+                value(i) += Jcounter
+            End If
         Next
         If value.Contains(5) Then
             Console.WriteLine("||||||||")
@@ -133,7 +136,7 @@ Module Module1
         ElseIf value.Contains(4) Then
 
             handType2 = "B"
-        ElseIf value.Count(Function(x) x = "3") = 2 Then
+        ElseIf (value.Count(Function(x) x = "3") = 2) And Jcounter = 1 Then
 
             handType2 = "C"
         ElseIf value.Contains(3) Then
